@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Details | Eventful</title>
+    <link rel="stylesheet" href="./css/event-details.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Event Details</h1>
+      <a href="eventee-dashboard.html" class="btn-back">Back to Dashboard</a>
+    </header>
+
+    <div class="container">
+      <main class="event-card">
+        <div id="statusMessage" class="status-msg"></div>
+
+        <h2 id="title" class="event-title">Loading...</h2>
+
+        <div class="event-meta">
+          <div class="meta-item">
+            <span class="meta-icon">📅</span>
+            <span id="date"></span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">📍</span>
+            <span id="location"></span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-icon">💰</span>
+            <strong>₦<span id="price"></span></strong>
+          </div>
+        </div>
+
+        <div class="event-description">
+          <p id="description"></p>
+        </div>
+
+        <div id="actionButtons" class="action-buttons">
+          <button id="applyBtn" class="btn btn-secondary" style="display: none">
+            Attend Event
+          </button>
+          <button
+            id="buyTicketBtn"
+            class="btn btn-primary"
+            style="display: none"
+          >
+            Buy Ticket
+          </button>
+          <button id="shareBtn" class="btn btn-outline">Share Event</button>
+        </div>
+
+        <div id="shareContainer" class="share-box">
+          <p>Link copied to clipboard:</p>
+          <a id="shareLinkText" href="#" class="share-link" target="_blank"></a>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="./js/events.js"></script>
+    <script type="module" src="./js/payment.js"></script>
+    <script type="module">
+      import { initializePayment } from "./js/payment.js";
+
+      const buyTicketBtn = document.getElementById("buyTicketBtn");
+      const priceElement = document.getElementById("price");
+      const params = new URLSearchParams(window.location.search);
+      const eventId = params.get("id");
+
+      if (buyTicketBtn) {
+        buyTicketBtn.onclick = () => {
+          const priceText = priceElement.textContent;
+          if (!priceText) return;
+          const amount = parseFloat(priceText) * 100; // Convert to Kobo
+          initializePayment(eventId, amount);
+        };
+      }
+    </script>
+  </body>
+</html>

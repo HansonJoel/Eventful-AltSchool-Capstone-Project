@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Spending</title>
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <header>
+      <h1>My Spending Analytics</h1>
+      <a href="eventee-dashboard.html" class="btn btn-back"
+        >Back to Dashboard</a
+      >
+    </header>
+    <main>
+      <div id="summary" class="stats-grid">Loading...</div>
+      <h3>Spending History</h3>
+      <table id="spendingTable">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Amount Spent</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <script type="module">
+      import { apiGet } from "./js/api.js";
+      async function load() {
+        const res = await apiGet(
+          "/analytics/eventee",
+          localStorage.getItem("token"),
+        );
+        if (res.success) {
+          const s = res.result.summary;
+          document.getElementById("summary").innerHTML = `
+                    <div class="stat-box"><h3>₦${s.totalSpent}</h3><p>Total Spent</p></div>
+                    <div class="stat-box"><h3>${s.totalEventsAttended}</h3><p>Tickets Purchased</p></div>
+                `;
+
+          const tbody = document.querySelector("#spendingTable tbody");
+          res.result.events.forEach((e) => {
+            const row = `<tr>
+                        <td>${e.title}</td>
+                        <td>${new Date(e.date).toLocaleDateString()}</td>
+                        <td>₦${e.amountSpent}</td>
+                    </tr>`;
+            tbody.innerHTML += row;
+          });
+        }
+      }
+      load();
+    </script>
+  </body>
+</html>

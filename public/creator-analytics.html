@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Creator Analytics</title>
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <header>
+      <h1>My Analytics</h1>
+      <a href="dashboard.html" class="btn btn-back">Back to Dashboard</a>
+    </header>
+    <main>
+      <div id="summary" class="stats-grid">Loading...</div>
+      <h3>Revenue per Event</h3>
+      <table id="analyticsTable">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Tickets Sold</th>
+            <th>Revenue</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <script type="module">
+      import { apiGet } from "./js/api.js";
+
+      async function load() {
+        const res = await apiGet(
+          "/analytics/creator",
+          localStorage.getItem("token"),
+        );
+        if (res.success) {
+          const s = res.result.summary;
+          document.getElementById("summary").innerHTML = `
+                    <div class="stat-box"><h3>₦${s.totalRevenueAll}</h3><p>Total Revenue</p></div>
+                    <div class="stat-box"><h3>${s.totalTicketsAll}</h3><p>Tickets Sold</p></div>
+                    <div class="stat-box"><h3>${s.totalAttendeesAll}</h3><p>Attendees</p></div>
+                `;
+
+          const tbody = document.querySelector("#analyticsTable tbody");
+          res.result.events.forEach((e) => {
+            const row = `<tr>
+                        <td>${e.title}</td>
+                        <td>${new Date(e.date).toLocaleDateString()}</td>
+                        <td>${e.totalTickets}</td>
+                        <td>₦${e.revenue}</td>
+                    </tr>`;
+            tbody.innerHTML += row;
+          });
+        }
+      }
+      load();
+    </script>
+  </body>
+</html>

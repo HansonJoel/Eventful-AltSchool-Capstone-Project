@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventee Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Welcome, Eventee</h1>
+      <nav>
+        <a href="eventee-analytics.html" class="btn btn-secondary"
+          >My Analytics</a
+        >
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="controls">
+        <button id="btnUpcoming" class="filter-btn active">
+          Upcoming Events
+        </button>
+        <button id="btnApplied" class="filter-btn">My Applied</button>
+        <button id="btnExpired" class="filter-btn">Expired (Applied)</button>
+      </section>
+
+      <div id="eventsContainer" class="grid-container"></div>
+
+      <div id="pagination" class="pagination-controls">
+        <button id="prevBtn">Previous</button>
+        <span id="pageInfo">Page 1</span>
+        <button id="nextBtn">Next</button>
+      </div>
+    </main>
+
+    <script type="module" src="./js/eventee-dashboard.js"></script>
+  </body>
+</html>

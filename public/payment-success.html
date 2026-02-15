@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment Successful</title>
+    <link rel="stylesheet" href="./css/events.css" />
+  </head>
+  <body>
+    <div class="success-container">
+      <div id="loading">
+        <h2>Verifying Payment...</h2>
+        <p>Please wait while we confirm your transaction.</p>
+      </div>
+
+      <div id="successContent" style="display: none">
+        <div class="success-icon">🎉</div>
+        <h1>Payment Successful!</h1>
+        <p id="status">Your ticket has been booked and emailed to you.</p>
+
+        <div class="action-buttons">
+          <a href="tickets.html" class="btn btn-primary">View My Ticket</a>
+          <a href="eventee-dashboard.html" class="btn btn-secondary"
+            >Back to Dashboard</a
+          >
+        </div>
+      </div>
+
+      <div id="errorContent" style="display: none">
+        <div class="success-icon" style="color: #dc3545">❌</div>
+        <h1 style="color: #dc3545">Payment Failed</h1>
+        <p id="errorMessage">We couldn't verify your payment.</p>
+
+        <div class="action-buttons">
+          <a href="eventee-dashboard.html" class="btn btn-secondary"
+            >Back to Dashboard</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./js/payment-success.js"></script>
+  </body>
+</html>

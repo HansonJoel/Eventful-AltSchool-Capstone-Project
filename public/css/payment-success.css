@@ -1,0 +1,87 @@
+/* PAYMENT SUCCESS PAGE STYLES */
+body {
+  font-family: "Arial", sans-serif;
+  background: #f4f6f8;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.success-container {
+  background: #ffffff;
+  padding: 2.5rem 2rem;
+  width: 95%;
+  max-width: 480px;
+  text-align: center;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease;
+}
+
+.success-container:hover {
+  transform: translateY(-3px);
+}
+
+.success-container h1 {
+  color: #2ecc71;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.success-container p {
+  font-size: 1rem;
+  margin: 0.8rem 0;
+  color: #333;
+}
+
+#status {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+/* Action buttons */
+.actions {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.actions a {
+  display: inline-block;
+  padding: 0.7rem 1.5rem;
+  text-decoration: none;
+  color: #fff;
+  background: #4a90e2;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
+}
+
+.actions a:hover {
+  background: #357ab8;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 400px) {
+  .success-container {
+    padding: 2rem 1rem;
+  }
+
+  .success-container h1 {
+    font-size: 1.7rem;
+  }
+
+  .actions a {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

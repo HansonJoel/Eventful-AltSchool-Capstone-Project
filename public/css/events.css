@@ -1,0 +1,155 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f4f7f6;
+  margin: 0;
+}
+
+.page-header {
+  background: white;
+  padding: 30px;
+  text-align: center;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.page-header h1 {
+  margin: 0;
+  color: #333;
+}
+
+/* Event List Grid */
+#eventsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.event-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+}
+
+.event-card h3 {
+  font-size: 1.3rem;
+  margin: 0 0 10px 0;
+  color: #2c3e50;
+}
+
+.event-card p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.event-card .price {
+  font-weight: bold;
+  color: #28a745;
+  font-size: 1.1rem;
+  margin-top: 10px;
+}
+
+.event-card a {
+  display: block;
+  text-align: center;
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.event-card a:hover {
+  background: #0056b3;
+}
+
+/* TICKET CARDS (tickets.html) */
+.ticket-card {
+  background: white;
+  border-left: 6px solid #28a745;
+  border-radius: 8px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket-card::before {
+  content: "TICKET";
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 3rem;
+  color: rgba(0, 0, 0, 0.03);
+  font-weight: bold;
+  pointer-events: none;
+}
+
+.ticket-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.ticket-body p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.ticket-qr {
+  background: #f8f9fa;
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px dashed #ccc;
+}
+
+.ticket-qr img {
+  max-width: 120px;
+  height: auto;
+}
+
+/* PAYMENT SUCCESS (payment-success.html) */
+.success-container {
+  max-width: 500px;
+  margin: 100px auto;
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.success-container h1 {
+  color: #28a745;
+}
+
+.action-buttons {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

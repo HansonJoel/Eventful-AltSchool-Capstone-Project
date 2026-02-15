@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Events | Eventful</title>
+    <link rel="stylesheet" href="./css/main.css" />
+    <link rel="stylesheet" href="./css/events.css" />
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Eventful</div>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li>
+          <a href="dashboard.html" id="dashboardLink" style="display: none"
+            >Dashboard</a
+          >
+        </li>
+        <li><a href="login.html" id="loginLink">Login</a></li>
+      </ul>
+    </nav>
+
+    <header class="page-header">
+      <h1>Explore Events</h1>
+      <p>Discover concerts, workshops, and more.</p>
+      <button
+        id="createEventBtn"
+        class="btn btn-primary"
+        style="display: none; margin: 20px auto"
+      >
+        + Create Event
+      </button>
+    </header>
+
+    <main>
+      <div id="eventsContainer" class="grid-container">
+        <p style="text-align: center">Loading events...</p>
+      </div>
+    </main>
+
+    <script type="module" src="./js/events.js"></script>
+    <script>
+      // Simple script to toggle nav links based on auth
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        document.getElementById("loginLink").style.display = "none";
+        const dashLink = document.getElementById("dashboardLink");
+        dashLink.style.display = "block";
+        // Redirect based on role
+        dashLink.href =
+          user.role === "creator" ? "dashboard.html" : "eventee-dashboard.html";
+      }
+    </script>
+  </body>
+</html>

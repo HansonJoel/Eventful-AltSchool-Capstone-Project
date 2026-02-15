@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Creator Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Creator Dashboard</h1>
+      <nav>
+        <a href="create-event.html" class="btn btn-primary">+ Create Event</a>
+        <a href="creator-analytics.html" class="btn btn-secondary">Analytics</a>
+        <button id="logoutBtn" class="btn btn-danger">Logout</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="controls">
+        <button id="filterUpcoming" class="filter-btn active">
+          Upcoming Events
+        </button>
+        <button id="filterExpired" class="filter-btn">Expired Events</button>
+      </section>
+
+      <div id="eventsContainer" class="grid-container">
+        <p>Loading your events...</p>
+      </div>
+    </main>
+
+    <script type="module" src="./js/dashboard.js"></script>
+  </body>
+</html>
