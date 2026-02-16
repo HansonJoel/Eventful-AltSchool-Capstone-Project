@@ -1,6 +1,4 @@
-/* =========================================
-   1. GLOBAL RESET & TYPOGRAPHY
-   ========================================= */
+/* GLOBAL RESET & TYPOGRAPHY */
 :root {
   --primary: #28a745;
   --primary-hover: #218838;
@@ -57,6 +55,7 @@ nav .logo {
 nav ul {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
 
 nav a {
@@ -72,7 +71,7 @@ nav a:hover {
 .hero {
   background: linear-gradient(135deg, var(--primary), #1e7e34);
   color: var(--white);
-  padding: 80px 20px;
+  padding: 100px 20px;
   text-align: center;
 }
 
@@ -82,14 +81,17 @@ nav a:hover {
 }
 
 .hero p {
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
   opacity: 0.9;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .btn {
   display: inline-block;
-  padding: 10px 24px;
+  padding: 12px 30px;
   border-radius: var(--border-radius);
   font-weight: 600;
   cursor: pointer;
@@ -116,12 +118,72 @@ nav a:hover {
   background: #e9ecef;
 }
 
+.btn-outline {
+  border: 2px solid var(--white);
+  color: var(--white);
+  background: transparent;
+  margin-left: 10px;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* FEATURES SECTION (New for Index) */
+.features-section {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+
+.section-subtitle {
+  color: var(--gray);
+  margin-bottom: 50px;
+  font-size: 1.1rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.feature-card {
+  background: var(--white);
+  padding: 40px 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+}
+
+.feature-card h3 {
+  color: var(--primary);
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.feature-card p {
+  color: #555;
+  line-height: 1.6;
+}
+
 /* AUTH PAGES (Login / Register) */
 .auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1; /* Pushes footer down */
+  flex: 1;
   padding: 40px 20px;
 }
 
@@ -171,13 +233,28 @@ nav a:hover {
   font-size: 0.9rem;
 }
 
+/* FOOTER */
+.main-footer {
+  background: var(--white);
+  border-top: 1px solid #eee;
+  padding: 30px;
+  text-align: center;
+  color: var(--gray);
+  margin-top: auto;
+}
+
 /* RESPONSIVENESS */
 @media (max-width: 768px) {
   .hero h1 {
     font-size: 2rem;
   }
+
   nav {
     flex-direction: column;
     gap: 15px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
   }
 }
