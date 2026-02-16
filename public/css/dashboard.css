@@ -1,8 +1,10 @@
-/* DASHBOARD LAYOUT */
 body {
   background-color: #f4f7f6;
   font-family: "Segoe UI", sans-serif;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 header {
@@ -26,12 +28,82 @@ header h1 {
 header nav {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 main {
   padding: 30px;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* BUTTON STYLES (New & Fixed) */
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/* Green (Create Event) */
+.btn-primary {
+  background-color: #28a745;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(40, 167, 69, 0.2);
+}
+
+/* Blue (Analytics) */
+.btn-secondary {
+  background-color: #007bff;
+  color: white;
+}
+.btn-secondary:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+}
+
+/* Red (Logout) */
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+}
+.btn-danger:hover {
+  background-color: #c82333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(220, 53, 69, 0.2);
+}
+
+/* Gray (Back to Dashboard) */
+.btn-back {
+  background-color: #6c757d;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  display: inline-block;
+  border: none;
+}
+.btn-back:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
 }
 
 /* DASHBOARD CONTROLS (Filters) */
@@ -159,7 +231,7 @@ tr:last-child td {
   font-size: 0.95rem;
 }
 
-/* Buttons inside cards */
+/* Links inside cards */
 .btn-link {
   display: inline-block;
   margin-top: 15px;
@@ -167,7 +239,6 @@ tr:last-child td {
   font-weight: 600;
   text-decoration: none;
 }
-
 .btn-link:hover {
   text-decoration: underline;
 }
@@ -178,6 +249,20 @@ tr:last-child td {
     flex-direction: column;
     gap: 15px;
     text-align: center;
+    padding-bottom: 20px;
+  }
+
+  header nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* Make buttons full width on mobile */
+  header nav .btn,
+  header .btn-back {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
   }
 
   .stats-grid {
@@ -188,5 +273,12 @@ tr:last-child td {
   td {
     padding: 10px;
     font-size: 0.9rem;
+  }
+
+  /* Make tables scroll horizontally on small screens */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
   }
 }
