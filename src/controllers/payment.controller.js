@@ -4,31 +4,29 @@ import * as paymentService from "../services/payment.service.js";
 export const initializePayment = async (req, res, next) => {
   try {
     const user = req.user;
-    const { eventId, amount } = req.body;
+    const { eventId } = req.body; // Removed 'amount' since service fetches it
 
     // Delegate to the service
     const result = await paymentService.initializePaymentService({
       user,
       eventId,
-      amount,
     });
 
     res.status(200).json({
       success: true,
-      ...result,
+      ...result, // Spreads 'free', 'ticket', 'transaction', etc.
     });
   } catch (error) {
     next(error);
   }
 };
 
-/* ---------------- VERIFY PAYMENT ---------------- */
+/* ---------------- VERIFY PAYMENT (No Change) ---------------- */
 export const verifyPayment = async (req, res, next) => {
   try {
     const user = req.user;
     const { reference, eventId } = req.body;
 
-    // Delegate to the service
     const result = await paymentService.verifyPaymentService({
       user,
       reference,
