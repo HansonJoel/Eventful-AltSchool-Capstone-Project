@@ -3,7 +3,7 @@ import { ENV } from "../config/env.js";
 
 export const initializePaystackPayment = async ({
   email,
-  amount, // amount in NAIRA
+  amount,
   reference,
   callback_url,
 }) => {
@@ -12,7 +12,7 @@ export const initializePaystackPayment = async ({
       "https://api.paystack.co/transaction/initialize",
       {
         email,
-        amount: amount * 100, // Convert NAIRA → KOBO
+        amount: amount.toString(), // Send exactly what the service gave us
         reference,
         callback_url,
         currency: "NGN",
