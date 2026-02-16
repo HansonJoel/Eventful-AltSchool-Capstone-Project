@@ -10,31 +10,33 @@ export async function initializePayment(eventId, amount) {
       return;
     }
 
-    // Amount in NAIRA (backend converts to kobo)
-    const paymentAmount = Number(amount);
-
-    if (!paymentAmount || paymentAmount <= 0) {
-      alert("Invalid payment amount.");
-      return;
-    }
-
+    // Amount here is just for basic validation. Backend uses DB price.
     const res = await apiPost(
       "/payments/initialize",
-      {
-        eventId,
-        amount: paymentAmount,
-      },
+      { eventId, amount },
       token,
     );
 
-    if (res.success && res.transaction?.authorization_url) {
-      // Append eventId so we can verify after redirect
-      const url = new URL(res.transaction.authorization_url);
-      url.searchParams.set("eventId", eventId);
+    if (res.success) {
+      // CASE 1: FREE EVENT (Direct Success)
+      if (res.free) {
+        alert(
+          "Registration Successful! You have been registered for this free event.",
+        );
+        window.location.href = "eventee-dashboard.html"; // Go to user dashboard to see ticket
+        return;
+      }
 
-      window.location.href = url.toString();
+      // CASE 2: PAID EVENT (Redirect to Paystack)
+      if (res.transaction?.authorization_url) {
+        const url = new URL(res.transaction.authorization_url);
+        url.searchParams.set("eventId", eventId);
+        window.location.href = url.toString();
+      } else {
+        alert("Failed to initialize payment. Try again.");
+      }
     } else {
-      alert("Failed to initialize payment. Try again.");
+      alert(res.message || "Failed to initialize payment.");
     }
   } catch (error) {
     console.error("Payment init error:", error);
@@ -42,7 +44,7 @@ export async function initializePayment(eventId, amount) {
   }
 }
 
-/* ---------------- VERIFY PAYMENT ---------------- */
+/* ---------------- VERIFY PAYMENT (No changes needed) ---------------- */
 export async function verifyPayment(reference, eventId) {
   try {
     const res = await apiPost(
@@ -60,7 +62,7 @@ export async function verifyPayment(reference, eventId) {
       statusText.innerHTML = `
         Payment Verified!<br>
         Ticket ID: ${ticket._id}<br>
-        Event: ${ticket.event.title}<br>
+        Event: ${ticket.ticketCode}<br>
         Amount Paid: ₦${verification.amount / 100}<br>
         Payment Reference: ${verification.reference}
       `;
@@ -73,7 +75,6 @@ export async function verifyPayment(reference, eventId) {
     }
   } catch (error) {
     console.error("Payment verification error:", error);
-
     const statusText = document.getElementById("status");
     statusText.textContent = "Error verifying payment. Please contact support.";
     statusText.style.color = "red";
