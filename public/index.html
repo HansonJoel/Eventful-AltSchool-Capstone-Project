@@ -3,30 +3,71 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eventful - Home</title>
+    <title>Eventful | Unforgettable Moments</title>
     <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
-    <header>
-      <h1>Welcome to Eventful</h1>
-      <nav>
-        <a href="login.html">Login</a> | <a href="register.html">Register</a> |
-        <a href="events.html">Events</a>
-      </nav>
+    <nav>
+      <div class="logo">Eventful</div>
+      <ul>
+        <!-- <li><a href="events.html">Browse Events</a></li> -->
+        <li><a href="login.html">Login</a></li>
+        <li>
+          <a href="register.html" class="btn btn-primary" style="color: white"
+            >Sign Up</a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <header class="hero">
+      <h1>Your Passport to Unforgettable Moments</h1>
+      <p>
+        From pulsating concerts to inspiring workshops, discover and book your
+        next experience today.
+      </p>
+
+      <div>
+        <a href="events.html" class="btn btn-light">Explore Events</a>
+        <a href="register.html" class="btn btn-outline">Create Account</a>
+      </div>
     </header>
 
-    <main>
-      <section>
-        <h2>Discover Events Near You</h2>
-        <p>Explore concerts, sports, theater, and more!</p>
-        <a href="events.html" class="btn">View Events</a>
-      </section>
+    <main class="features-section">
+      <h2 class="section-title">Why Choose Eventful?</h2>
+      <p class="section-subtitle">
+        We make it easier than ever to organize and attend events.
+      </p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <h3>🎫 Easy Ticketing</h3>
+          <p>
+            Secure your spot instantly. Receive a unique QR code for seamless
+            entry at the venue.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>📅 Real-time Updates</h3>
+          <p>
+            Get notified about upcoming events and never miss out on your
+            favorite experiences.
+          </p>
+        </div>
+
+        <div class="feature-card">
+          <h3>🛡️ Secure Payments</h3>
+          <p>
+            Powered by Paystack to ensure your transactions are safe, fast, and
+            reliable.
+          </p>
+        </div>
+      </div>
     </main>
 
-    <footer>
+    <footer class="main-footer">
       <p>&copy; 2026 Eventful. All rights reserved.</p>
     </footer>
-
-    <script src="js/api.js"></script>
   </body>
 </html>
