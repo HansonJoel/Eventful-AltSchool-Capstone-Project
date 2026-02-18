@@ -1,27 +1,36 @@
-import { redisClient } from "../config/redis.js";
-import { sendEmail } from "../config/brevo.js";
 import Notification from "../models/Notification.js";
+import { sendEmail } from "../config/brevo.js";
 
 export const startNotificationJob = () => {
+  // Run every 5 minutes to check for pending reminders
   setInterval(async () => {
     try {
-      // Example: send unsent notifications
-      const notifications = await Notification.find({ sent: false });
+      const now = new Date();
+      // Find notifications where the scheduled time has passed and they haven't been sent
+      const pendingReminders = await Notification.find({
+        remindAt: { $lte: now },
+        status: "pending",
+      }).populate("user event");
 
-      for (let note of notifications) {
+      for (let reminder of pendingReminders) {
+        const userEmail = reminder.user?.email || reminder.userEmail;
+        const eventTitle = reminder.event?.title || "an upcoming event";
+
         const result = await sendEmail({
-          to: note.userEmail,
-          subject: "New Event Notification",
-          html: `<p>${note.message}</p>`,
+          to: userEmail,
+          subject: `Reminder: ${eventTitle} is coming up!`,
+          html: `<p>Hello, this is your reminder for <strong>${eventTitle}</strong>.</p>
+                 <p>${reminder.message}</p>`,
         });
 
         if (result.success) {
-          note.sent = true;
-          await note.save();
+          reminder.status = "sent";
+          reminder.sent = true;
+          await reminder.save();
         }
       }
     } catch (err) {
-      console.error("Notification job error:", err);
+      console.error("Scheduled Notification Job Error:", err);
     }
-  }, 30_000); // every 30 seconds
+  }, 300_000); // 5 minutes
 };

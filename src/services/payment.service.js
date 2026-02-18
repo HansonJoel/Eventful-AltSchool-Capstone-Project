@@ -9,67 +9,56 @@ import { generateQRCode } from "./qr.service.js";
 
 /* ---------------- INITIALIZE PAYMENT (Handles Paid & Free) ---------------- */
 export const initializePaymentService = async ({ user, eventId }) => {
-  // 1. Fetch Event to get the REAL price (Security Fix)
   const event = await Event.findById(eventId);
   if (!event) throw new Error("Event not found");
 
-  const priceInNaira = event.price; // e.g., 0, 240, 5000
+  const priceInNaira = event.price;
 
-  // FREE EVENT (Bypass Paystack)
   if (priceInNaira === 0) {
-    const reference = `FREE-${crypto.randomUUID()}`; // Internal reference
-
-    // 1. Generate QR Code immediately
+    const reference = `FREE-${crypto.randomUUID()}`;
     const qrPayload = `EVENT-${eventId}-USER-${user._id}-REF-${reference}`;
     const qrImage = await generateQRCode(qrPayload);
 
-    // 2. Create the Ticket immediately
     const ticket = await Ticket.create({
       event: eventId,
       user: user._id,
       amount: 0,
       ticketCode: crypto.randomBytes(8).toString("hex").toUpperCase(),
       paymentReference: reference,
-      paymentStatus: "completed", // Free events are always "completed"
+      paymentStatus: "completed",
       qrCode: qrImage,
     });
 
-    // 3. Update Event Attendees
+    await ticket.populate("event", "title date location");
+
     await Event.findByIdAndUpdate(eventId, {
       $addToSet: { attendees: user._id },
     });
 
-    // 4. Send Email
-    await sendEmail({
+    sendEmail({
       to: user.email,
       subject: "🎫 Free Ticket Confirmation",
       html: `<p>Hi ${user.name},</p>
              <p>You have successfully registered for the free event: <strong>${event.title}</strong>!</p>
              <p>Ticket Code: <strong>${ticket.ticketCode}</strong></p>`,
-    });
+    }).catch((err) =>
+      console.error("⚠️ Free Ticket Email Failed:", err.message),
+    );
 
-    // 5. Return a special "Free" response
-    return {
-      free: true,
-      ticket,
-      message: "Registration successful",
-    };
+    return { free: true, ticket, message: "Registration successful" };
   }
 
-  // 1. Convert Naira to Kobo here
   const amountInKobo = priceInNaira * 100;
   const reference = crypto.randomUUID();
 
-  // 2. Send Kobo to Paystack Config
   const paystackResponse = await initializePaystackPayment({
     email: user.email,
-    amount: amountInKobo, // Sends 24000
+    amount: amountInKobo,
     reference,
     callback_url: `${ENV.FRONTEND_URL}/payment-success.html?eventId=${eventId}`,
   });
 
-  // 3. Record the transaction in Naira (Store 240)
-  const payment = await Payment.create({
+  await Payment.create({
     user: user._id,
     event: eventId,
     reference,
@@ -80,7 +69,6 @@ export const initializePaymentService = async ({ user, eventId }) => {
 
   return {
     free: false,
-    payment,
     transaction: {
       authorization_url: paystackResponse.data.authorization_url,
       reference,
@@ -96,13 +84,14 @@ export const verifyPaymentService = async ({ user, reference, eventId }) => {
   const payment = await Payment.findOne({ reference, user: user._id });
   if (!payment) throw new Error("Payment record not found");
 
-  // If already verified, return existing ticket
   if (payment.status === "success" && payment.ticket) {
-    const existingTicket = await Ticket.findById(payment.ticket);
+    const existingTicket = await Ticket.findById(payment.ticket).populate(
+      "event",
+      "title",
+    );
     return { ticket: existingTicket, verification: payment.meta };
   }
 
-  // Verify with Paystack
   const response = await fetch(
     `https://api.paystack.co/transaction/verify/${reference}`,
     {
@@ -121,7 +110,7 @@ export const verifyPaymentService = async ({ user, reference, eventId }) => {
   payment.status = "success";
   payment.meta = paystackResult.data;
 
-  const qrPayload = `EVENT-${eventId}-USER-${user._id}-REF-${reference}`;
+  const qrPayload = `TICKET-${crypto.randomBytes(4).toString("hex")}-EVENT-${eventId}`;
   const qrImage = await generateQRCode(qrPayload);
 
   const ticket = await Ticket.create({
@@ -134,6 +123,8 @@ export const verifyPaymentService = async ({ user, reference, eventId }) => {
     qrCode: qrImage,
   });
 
+  await ticket.populate("event", "title date location");
+
   payment.ticket = ticket._id;
   await payment.save();
 
@@ -141,13 +132,13 @@ export const verifyPaymentService = async ({ user, reference, eventId }) => {
     $addToSet: { attendees: user._id },
   });
 
-  await sendEmail({
+  sendEmail({
     to: user.email,
     subject: "🎫 Ticket Purchase Successful",
     html: `<p>Hi ${user.name},</p>
            <p>Your ticket for <strong>${event.title}</strong> has been successfully purchased!</p>
            <p>Ticket Code: <strong>${ticket.ticketCode}</strong></p>`,
-  });
+  }).catch((err) => console.error("⚠️ Background Email Failed:", err.message));
 
   return { ticket, verification: paystackResult.data };
 };

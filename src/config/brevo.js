@@ -3,10 +3,12 @@ import { ENV } from "./env.js";
 
 export const emailTransporter = nodemailer.createTransport({
   host: "smtp-relay.brevo.com",
-  port: 587,
-  secure: false, // TLS false for 587
+  port: 2525, // Keep this, it is working!
+  secure: false,
   auth: {
-    user: "apikey",
+    // FIX: Use the variable we just added, NOT "apikey"
+    user: ENV.BREVO_USER,
+    // ENSURE: This is the SMTP Key (starts with xsmtp-), not the API Key
     pass: ENV.BREVO_API_KEY,
   },
   tls: {
@@ -17,15 +19,12 @@ export const emailTransporter = nodemailer.createTransport({
 export const sendEmail = async ({ to, subject, html }) => {
   try {
     const info = await emailTransporter.sendMail({
-      from: `Eventful <${ENV.FROM_EMAIL}>`,
+      from: `Eventful <${ENV.FROM_EMAIL || ENV.BREVO_USER}>`, // Ensure 'from' is valid
       to,
       subject,
       html,
     });
-
-    console.log(
-      `✅ Email sent to ${to} | Subject: "${subject}" | MessageId: ${info.messageId}`,
-    );
+    console.log(`✅ Email sent to ${to} | MsgId: ${info.messageId}`);
     return { success: true, info };
   } catch (error) {
     console.error(

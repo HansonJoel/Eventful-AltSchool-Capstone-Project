@@ -12,7 +12,13 @@ export const ENV = {
   REDIS_PASSWORD: process.env.REDIS_PASSWORD,
 
   PAYSTACK_SECRET_KEY: process.env.PAYSTACK_SECRET_KEY,
+  // BREVO_API_KEY: process.env.BREVO_API_KEY,
+
+  // ... keep your existing variables
   BREVO_API_KEY: process.env.BREVO_API_KEY,
+  // ADD THIS LINE:
+  BREVO_USER: process.env.BREVO_USER,
+
   FROM_EMAIL: process.env.FROM_EMAIL,
 
   BASE_URL: process.env.BASE_URL || "http://localhost:5000",
